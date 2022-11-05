@@ -35,13 +35,27 @@ spec:
           spec:
             description: DummySpec defines the desired state of Dummy
             properties:
-              foo:
-                description: Foo is an example field of Dummy. Edit dummy_types.go
-                  to remove/update
+              message:
+                description: Message is a field of Dummy to provide an arbitrary string
+                  data
                 type: string
+            required:
+            - message
             type: object
           status:
             description: DummyStatus defines the observed state of Dummy
+            properties:
+              podStatus:
+                description: PodStatus is a field of Dummy to provide information
+                  from the pod CR owns
+                type: string
+              specEcho:
+                description: SpecEcho is a field of Dummy to echo information from
+                  message spec
+                type: string
+            required:
+            - podStatus
+            - specEcho
             type: object
         type: object
     served: true
