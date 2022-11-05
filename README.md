@@ -64,6 +64,14 @@ So we can deploy our dummy controller using this command:
 make deploy IMG=mmertdogann/dummy-operator:0.1
 ```
 
+After this command, the controller will be deployed under `dummy-operator-system`namespace
+
+Controller logs could be observed by this command:
+
+```sh
+k logs -f <pod-name> -n dummy-operator-system -c manager
+```
+
 3. Install Instances of Custom Resources:
 
 ```sh
