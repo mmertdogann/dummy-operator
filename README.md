@@ -1,30 +1,73 @@
 # dummy-operator
-// TODO(user): Add simple overview of use/purpose
+A simple dummy controller for managing nginx pods.
 
 ## Description
-// TODO(user): An in-depth paragraph about your project and overview of use
+The dummy operator is a custom Kubernetes controller used for creating nginx pods and giving a status field to the Custom Resource that tracks the
+status of the Nginx Pod associated with the CR (Dummy).
+
+The dummy operator has three objectives:
+
+1. Logs the Spec of the Custom Resource (`name`, `namespace` and
+   the value of `spec.message`).
+2. Copies the value of `spec.message` into `status.specEcho` for each CR (Dummy).
+3. Creates and associates an `nginx` Pod to each Dummy API object and gives CR (Dummy) a status field that tracks the status of the Pod associated to the Dummy.
+
+## Technologies
+The project has been created using these technologies:
+
+* **golang** as programming language
+* **Kubernetes** as container-orchestration system
+* **kubectl** as command-line tool to interact kubernetes
+* **Kubebuilder** as a framework for building Kubernetes APIs using custom resource definitions (CRDs)
+
+## Installation
+**Install:**
+
+1. `golang v1.19.0+` from <a href="https://go.dev/dl/">here</a>
+2. `Docker 17.03+` from <a href="https://docs.docker.com/get-docker/">here</a> then enable kubernetes
+3. `kubectl  v1.11.3+` from <a href="https://kubernetes.io/docs/tasks/tools/">here</a>
+4. `Kubebuilder 3.7.0` from <a href="https://book.kubebuilder.io/quick-start.html">here</a>
 
 ## Getting Started
 You’ll need a Kubernetes cluster to run against. You can use [KIND](https://sigs.k8s.io/kind) to get a local cluster for testing, or run against a remote cluster.
-**Note:** Your controller will automatically use the current context in your kubeconfig file (i.e. whatever cluster `kubectl cluster-info` shows).
+>In this project, controller deployed in a Kubernetes single-node cluster inside Docker Desktop rather than KIND or remote cluster.
 
-### Running on the cluster
-1. Install Instances of Custom Resources:
-
-```sh
-kubectl apply -f config/samples/
+### Cloning the Repository
+```
+git clone https://github.com/mmertdogann/dummy-operator
 ```
 
-2. Build and push your image to the location specified by `IMG`:
+### Running on the cluster
+
+>For testing the controller we can either deploy it on a Kubernetes cluster with `make deploy IMG=<some-registry>/dummy-operator:tag` command  or
+we can directly run the controller with `make run IMG=<some-registry>/dummy-operator:tag` command.
+
+### Test the controller by deploying it on the cluster
+
+1. Build and push the controller image to the location specified by `IMG`:
 	
 ```sh
 make docker-build docker-push IMG=<some-registry>/dummy-operator:tag
 ```
 	
-3. Deploy the controller to the cluster with the image specified by `IMG`:
+2. Deploy the controller to the cluster with the image specified by `IMG`:
 
 ```sh
 make deploy IMG=<some-registry>/dummy-operator:tag
+```
+
+>>> The dummy controller image named `mmertdogann/dummy-operator:0.1` has already built and pushed to the docker hub.
+
+So we can deploy our dummy controller using this command:
+
+```sh
+make deploy IMG=mmertdogann/dummy-operator:0.1
+```
+
+3. Install Instances of Custom Resources:
+
+```sh
+kubectl apply -f config/samples/
 ```
 
 ### Uninstall CRDs
@@ -35,32 +78,29 @@ make uninstall
 ```
 
 ### Undeploy controller
-UnDeploy the controller to the cluster:
+Undeploy the controller to the cluster:
 
 ```sh
 make undeploy
 ```
 
-## Contributing
-// TODO(user): Add detailed information on how you would like others to contribute to this project
-
-### How it works
-This project aims to follow the Kubernetes [Operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/)
-
-It uses [Controllers](https://kubernetes.io/docs/concepts/architecture/controller/) 
-which provides a reconcile function responsible for synchronizing resources untile the desired state is reached on the cluster 
-
-### Test It Out
+### Test the controller by running
 1. Install the CRDs into the cluster:
 
 ```sh
 make install
 ```
 
-2. Run your controller (this will run in the foreground, so switch to a new terminal if you want to leave it running):
+2. Run the controller (this will run in the foreground, so switch to a new terminal if you want to leave it running):
 
 ```sh
 make run
+```
+
+3. Install Instances of Custom Resources:
+
+```sh
+kubectl apply -f config/samples/
 ```
 
 **NOTE:** You can also run this in one step by running: `make install run`
@@ -71,10 +111,6 @@ If you are editing the API definitions, generate the manifests such as CRs or CR
 ```sh
 make manifests
 ```
-
-**NOTE:** Run `make --help` for more information on all potential `make` targets
-
-More information can be found via the [Kubebuilder Documentation](https://book.kubebuilder.io/introduction.html)
 
 ## License
 
