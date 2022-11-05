@@ -43,6 +43,7 @@ type DummyReconciler struct {
 //+kubebuilder:rbac:groups=anynines.interview.com,resources=dummies,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=anynines.interview.com,resources=dummies/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=anynines.interview.com,resources=dummies/finalizers,verbs=update
+// +kubebuilder:rbac:groups=core,resources=pods,verbs=get;list;watch;create;update;patch;delete
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
