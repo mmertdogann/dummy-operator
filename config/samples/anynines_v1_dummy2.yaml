@@ -1,7 +1,7 @@
 apiVersion: anynines.interview.com/v1
 kind: Dummy
 metadata:
-  name: dummy
+  name: dummy2
   namespace: default
 spec:
-  message: "I'm just a dummy"
+  message: "I'm just a dummy2"

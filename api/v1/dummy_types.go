@@ -20,22 +20,18 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
 // DummySpec defines the desired state of Dummy
 type DummySpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-
-	// Foo is an example field of Dummy. Edit dummy_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// Message is a field of Dummy to provide an arbitrary string data
+	Message string `json:"message"`
 }
 
 // DummyStatus defines the observed state of Dummy
 type DummyStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	// SpecEcho is a field of Dummy to echo information from message spec
+	SpecEcho string `json:"specEcho"`
+	// PodStatus is a field of Dummy to provide information from the pod CR owns
+	PodStatus string `json:"podStatus"`
 }
 
 //+kubebuilder:object:root=true
