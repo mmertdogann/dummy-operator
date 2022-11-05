@@ -1,0 +1,17 @@
+domain: interview.com
+layout:
+- kustomize.common.kubebuilder.io/v2-alpha
+- base.go.kubebuilder.io/v3
+projectName: dummy-operator
+repo: github.com/mmertdogann/dummy-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: interview.com
+  group: anynines
+  kind: Dummy
+  path: github.com/mmertdogann/dummy-operator/api/v1
+  version: v1
+version: "3"
