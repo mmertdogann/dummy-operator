@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
@@ -53,7 +53,7 @@ var _ = Describe("Dummy controller", func() {
 				return true
 			}, timeout, interval).Should(BeTrue())
 			// Let's make sure our Schedule string value was properly converted/handled.
-			Expect(createdDummy.Spec.Message).Should(Equal("anynines.interview.com/v1"))
+			Expect(createdDummy.Spec.Message).Should(Equal("I'm just a dummy"))
 		})
 	})
 })
