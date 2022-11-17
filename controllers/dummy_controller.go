@@ -40,6 +40,8 @@ type DummyReconciler struct {
 	Scheme *runtime.Scheme
 }
 
+var containerImage = "nginx:alpine"
+
 //+kubebuilder:rbac:groups=anynines.interview.com,resources=dummies,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=anynines.interview.com,resources=dummies/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=anynines.interview.com,resources=dummies/finalizers,verbs=update
@@ -150,6 +152,19 @@ func (r *DummyReconciler) checkNginxPod(ctx context.Context,
 		return &reconcile.Result{}, updateStatusErr
 	}
 
+	if len(found.Spec.Containers) == 1 && found.Spec.Containers[0].Image != containerImage {
+		fmt.Println("Current Image:", found.Spec.Containers[0].Image)
+		found.Spec.Containers[0].Image = containerImage
+
+		updatePodErr := r.Client.Update(ctx, found)
+		if updatePodErr != nil {
+			lg.Error(updatePodErr, "Failed to update Pod's container image")
+			return &ctrl.Result{}, updatePodErr
+		}
+	} else if len(found.Spec.Containers) > 1 {
+		return &ctrl.Result{}, fmt.Errorf("There is one more container inside the nginx pod")
+	}
+
 	return &ctrl.Result{}, nil
 }
 
@@ -170,7 +185,7 @@ func (r *DummyReconciler) createNginxPod(cr *anyninesv1.Dummy) *v1.Pod {
 			Containers: []v1.Container{
 				{
 					Name:  cr.Name,
-					Image: "nginx:alpine",
+					Image: containerImage,
 					Ports: []v1.ContainerPort{
 						{
 							Name:          "http",
